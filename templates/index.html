@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Examen</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/darkly/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            height: 100vh;
+            background-color: rgb(191, 191, 191); /* Fondo azul */
+            color: white; /* Texto blanco */
+            justify-content: flex-start; /* Alinear contenido a la izquierda */
+            align-items: flex-start; /* Alinear elementos a la izquierda */
+            margin: 0; /* Eliminar margen por defecto del cuerpo */
+            padding: 0; /* Eliminar relleno por defecto del cuerpo */
+        }
+        
+        .container {
+            width: 100%;
+            background-color: rgb(55, 55, 55); /* Fondo azul */
+            padding: 20px;
+            border-radius: 10px;
+            margin: 0 auto; /* Centrar el contenedor horizontalmente */
+            box-sizing: border-box; /* Incluir bordes y relleno en el ancho total */
+        }
+
+        .form-group label {
+            color: white; /* Texto blanco para las etiquetas */
+        }
+
+        textarea {
+            background-color: #333; /* Color de fondo gris oscuro */
+            color: white; /* Texto blanco */
+            width: 100%; /* Ocupar todo el ancho disponible */
+            box-sizing: border-box; /* Incluir bordes y relleno en el ancho total */
+        }
+
+        .btn-primary {
+            background-color: #555; /* Botón gris oscuro */
+            border-color: #555; /* Borde gris oscuro */
+            margin-top: 10px; /* Espacio superior */
+        }
+
+        .table {
+            color: white; /* Texto blanco en la tabla */
+            width: 100%; /* Ocupar todo el ancho disponible */
+            box-sizing: border-box; /* Incluir bordes y relleno en el ancho total */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="mb-5">Lester Texter</h1>
+        <form action="/lex" method="post">
+            <div class="form-group">
+                <textarea id="code" name="code" rows="10" class="form-control"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Analizar</button>
+        </form>
+
+        {% if tokens %}
+            <h2 class="mt-5">Resultados del Analisis</h2>
+            <div class="table-responsive mt-4">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>IDENTIFIER</th>
+                            <th>RESERVED</th>
+                            <th>SYMBOL</th>
+                            <th>RS ERROR</th>
+                            <th>ERROR</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for token in tokens %}
+                            <tr>
+                                {% if token['type'] == 'IDENTIFIER' %}
+                                    <td>{{ token['value'] }}</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                {% elif token['type'] == 'RESERVED' %}
+                                    <td></td>
+                                    <td>{{ token['value'] }}</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                {% elif token['type'] == 'SYMBOL' %}
+                                    <td></td>
+                                    <td></td>
+                                    <td>{{ token['value'] }}</td>
+                                    <td></td>
+                                    <td></td>
+                                {% elif token['type'] == 'BAD_RESERVED' %}
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>{{ token['value'] }}</td>
+                                    <td></td>
+                                {% endif %}
+                            </tr>
+                        {% endfor %}
+                        {% for error in errores %}
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>{{ error }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
